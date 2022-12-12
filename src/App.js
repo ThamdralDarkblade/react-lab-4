@@ -14,7 +14,7 @@ function App() {
                 <Button variant="outline-secondary" id="button-cart" ref={basketRef}>
                     <img className="icon" src={require("./assets/shopping-cart.png")} alt="wish"/>
                 </Button>
-                {CardList(dataURL, basketRef)}
+                <CardList dataURL={dataURL} basketRef={basketRef}/>
             </Container>
         </div>
     );

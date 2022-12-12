@@ -1,11 +1,11 @@
-import { Card } from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 
 export function CardItem(props) {
     const { item, addFavourite, isFavourite, basketFocus } = props;
     const { id, image, title, price } = item;
 
     return (
-        <Card className="text-start" key={id} onClick={basketFocus}>
+        <Card className="text-start" key={id}>
             <div>
                 {isFavourite(id) ? (
                     <img
@@ -23,6 +23,9 @@ export function CardItem(props) {
                     />
                 )}
                 <img className="icon" src={require("../assets/scale.png")} alt="compare" />
+                <Button variant="" id="button-cart" onClick={basketFocus}>
+                    <img className="icon" src={require("../assets/shopping-cart.png")} alt="wish"/>
+                </Button>
             </div>
 
             <Card.Img variant="top" src={image} alt={title} style={{ height: '200px' }} />

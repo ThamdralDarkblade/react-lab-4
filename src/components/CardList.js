@@ -25,7 +25,8 @@ function sort(data, setData, sortingType) {
 }
 
 
-export function CardList(dataURL, basketRef) {
+export function CardList(props) {
+    const { dataURL, basketRef } = props;
     const [data, setData] = useState([]);
     const [currentSorting, setCurrentSorting] = useState(sortingTypes.ratingDESC);
     const inputRef = useRef(null);
