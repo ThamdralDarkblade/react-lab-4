@@ -1,9 +1,9 @@
-import {useState, useEffect, useRef} from 'react';
-import {CardItem} from './CardItem';
+import { useState, useEffect, useRef } from 'react';
+import { CardItem } from './CardItem';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import {orders, sortingTypes, fields} from '../constants';
-import {SortingDropdown} from './SortingDropdown'
+import { orders, sortingTypes, fields } from '../constants';
+import { SortingDropdown } from './SortingDropdown'
 
 function sort(data, setData, sortingType) {
     const [field, order] = sortingType.split(', ');
@@ -31,6 +31,34 @@ export function CardList(dataURL, basketRef) {
     const inputRef = useRef(null);
     const focus = () => inputRef.current.focus();
     const basketFocus = () => basketRef.current.focus();
+    const [favourites, setFavourites] = useState([]);
+
+    const addFavourite = (id) => {
+        let arr = favourites;
+        let addArr = true;
+        arr.map((item, key) => {
+            if (item === id) {
+                arr.splice(key, 1);
+                addArr = false;
+            }
+        });
+        if (addArr) {
+            arr.push(id);
+        }
+        setFavourites([...arr]);
+        setLocalFavourites([...arr])
+    }
+
+    const getLocalFavourites = () => {
+        return JSON.parse(localStorage.getItem('favourites')) || [];
+    }
+    const setLocalFavourites = (favourites) => {
+        localStorage.setItem('favourites', JSON.stringify(favourites))
+    }
+
+    const isFavourite = (id) => {
+        return favourites.includes(id);
+    }
 
     useEffect(() => {
         fetch(dataURL)
@@ -41,15 +69,25 @@ export function CardList(dataURL, basketRef) {
             });
     }, [dataURL]);
 
+    useEffect(() => {
+        setFavourites(getLocalFavourites());
+    }, []);
+
     sort(data, setData, currentSorting);
 
     return (
         <div>
-            {SortingDropdown({setCurrentSorting})}
+            {SortingDropdown({ setCurrentSorting })}
             <Row xs={3} md={5} className="g-4">
-                {data.map((item) => {
-                    return CardItem({item, basketFocus})
-                })}
+                {data.map((item) =>
+                    <CardItem
+                        key={item.id}
+                        item={item}
+                        addFavourite={addFavourite}
+                        isFavourite={isFavourite}
+                        basketFocus={basketFocus}
+                    />
+                )}
                 <Col>
                 </Col>
             </Row>
