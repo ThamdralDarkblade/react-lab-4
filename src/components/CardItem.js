@@ -1,10 +1,11 @@
 import {Card} from "react-bootstrap";
 
 export function CardItem(props) {
-    let {id, image, title, price} = props;
+    const {item, basketFocus} = props;
+    const {id, image, title, price} = item;
 
     return (
-        <Card className="text-start" key={id}>
+        <Card className="text-start" key={id} onClick={basketFocus}>
             <div>
                 <img className="icon" src={require("../assets/heart.png")} alt="wish"/>
                 <img className="icon" src={require("../assets/scale.png")} alt="compare"/>
