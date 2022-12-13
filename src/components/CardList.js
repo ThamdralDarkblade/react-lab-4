@@ -21,16 +21,17 @@ function sort(data, setData, sortingType) {
     } else {
         sorter = (a, b) => (a.price > b.price ? greater : less);
     }
-    const sortedData = data.sort(sorter);
-    console.log(sortedData);
+    data.sort(sorter);
 }
 
 
-export function CardList(dataURL) {
+export function CardList(props) {
+    const { dataURL, basketRef } = props;
     const [data, setData] = useState([]);
     const [currentSorting, setCurrentSorting] = useState(sortingTypes.ratingDESC);
     const inputRef = useRef(null);
     const focus = () => inputRef.current.focus();
+    const basketFocus = () => basketRef.current.focus();
     const [favourites, setFavourites] = useState([]);
 
     const addFavourite = (id) => {
@@ -79,12 +80,13 @@ export function CardList(dataURL) {
         <div>
             {SortingDropdown({ setCurrentSorting })}
             <Row xs={3} md={5} className="g-4">
-                {data.map((item) => 
+                {data.map((item) =>
                     <CardItem
                         key={item.id}
                         item={item}
                         addFavourite={addFavourite}
                         isFavourite={isFavourite}
+                        basketFocus={basketFocus}
                     />
                 )}
                 <Col>
