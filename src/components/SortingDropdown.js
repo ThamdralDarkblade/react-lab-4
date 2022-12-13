@@ -1,8 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import {sortingTypes} from "../constants";
 
+const {Select} = Form;
 
-const { Select } = Form;
 export function SortingDropdown(props) {
     const {setCurrentSorting} = props;
     const onChangeSorting = (e) => {
