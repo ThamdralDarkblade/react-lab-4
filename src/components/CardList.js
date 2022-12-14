@@ -1,11 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
-import { CardItem } from './CardItem';
+import {useState, useEffect, useRef} from 'react';
+import {CardItem} from './CardItem';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { orders, sortingTypes, fields } from '../constants';
-import { SortingDropdown } from './SortingDropdown'
+import Container from 'react-bootstrap/Container';
+import {orders, sortingTypes, fields} from '../constants';
+import {SortingDropdown} from './SortingDropdown'
+import {FilterDropdown} from "./FilterDropdown";
 
-function sort(data, setData, sortingType) {
+function filter(data, setData, category) {
+    if (category === 'all') {
+        return data;
+    }
+    return data.filter(product => product.category === category);
+}
+
+
+function sort(data, sortingType) {
     const [field, order] = sortingType.split(', ');
     let greater, less;
     if (order === orders.desc) {
@@ -26,9 +36,10 @@ function sort(data, setData, sortingType) {
 
 
 export function CardList(props) {
-    const { dataURL, basketRef } = props;
+    const {dataURL, basketRef} = props;
     const [data, setData] = useState([]);
     const [currentSorting, setCurrentSorting] = useState(sortingTypes.ratingDESC);
+    const [currentFilter, setCurrentFilter] = useState('');
     const inputRef = useRef(null);
     const focus = () => inputRef.current.focus();
     const basketFocus = () => basketRef.current.focus();
@@ -74,13 +85,23 @@ export function CardList(props) {
         setFavourites(getLocalFavourites());
     }, []);
 
-    sort(data, setData, currentSorting);
+    const filteredData = filter(data, setCurrentFilter, currentFilter);
+    sort(filteredData, currentSorting);
 
     return (
         <div>
-            {SortingDropdown({ setCurrentSorting })}
+            <Container>
+                <Row>
+                    <Col>
+                        <SortingDropdown setCurrentSorting={setCurrentSorting}/>
+                    </Col>
+                    <Col>
+                        <FilterDropdown setCurrentFilter={setCurrentFilter} data={data}/>
+                    </Col>
+                </Row>
+            </Container>
             <Row xs={3} md={5} className="g-4">
-                {data.map((item) =>
+                {filteredData.map((item) =>
                     <CardItem
                         key={item.id}
                         item={item}
