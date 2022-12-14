@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import {CardItem} from './CardItem';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -36,12 +36,10 @@ function sort(data, sortingType) {
 
 
 export function CardList(props) {
-    const {dataURL, basketRef} = props;
+    const { dataURL, basketRef} = props;
     const [data, setData] = useState([]);
     const [currentSorting, setCurrentSorting] = useState(sortingTypes.ratingDESC);
-    const [currentFilter, setCurrentFilter] = useState('');
-    const inputRef = useRef(null);
-    const focus = () => inputRef.current.focus();
+    const [currentFilter, setCurrentFilter] = useState('all');
     const basketFocus = () => basketRef.current.focus();
     const [favourites, setFavourites] = useState([]);
 
