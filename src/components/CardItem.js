@@ -1,8 +1,11 @@
-import {Button, Card} from "react-bootstrap";
+import {useState} from "react"
+import { Button, Card } from "react-bootstrap";
+import {Portal} from "./Portal"
 
 export function CardItem(props) {
     const { item, addFavourite, isFavourite, basketFocus } = props;
     const { id, image, title, price } = item;
+    const [open, setOpen] = useState(false); 
 
     return (
         <Card className="text-start" key={id}>
@@ -22,9 +25,17 @@ export function CardItem(props) {
                         alt="wish"
                     />
                 )}
-                <img className="icon" src={require("../assets/scale.png")} alt="compare" />
+                <img
+                    onClick={() => setOpen(true)}
+                    className="icon"
+                    src={require("../assets/scale.png")}
+                    alt="compare"
+                />
+                <Portal open={open} onClose={() => setOpen(false)}>
+                    <div><u>{title}</u> added to comparison</div>
+                </Portal>
                 <Button variant="" id="button-cart" onClick={basketFocus}>
-                    <img className="icon" src={require("../assets/shopping-cart.png")} alt="wish"/>
+                    <img className="icon" src={require("../assets/shopping-cart.png")} alt="wish" />
                 </Button>
             </div>
 
